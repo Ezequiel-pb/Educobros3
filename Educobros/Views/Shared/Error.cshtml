@@ -1,0 +1,28 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="page-shell">
+    <div class="info-panel error-panel">
+        <span class="page-badge">Sistema</span>
+        <h1 class="page-title text-danger">Ha ocurrido un error</h1>
+        <p class="page-subtitle">Se produjo un problema mientras se procesaba la solicitud.</p>
+
+        @if (Model.ShowRequestId)
+        {
+            <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+        }
+
+        <hr />
+
+        <h4>Modo de desarrollo</h4>
+        <p>
+            Si activas el entorno <strong>Development</strong>, podrás ver información más detallada del error.
+        </p>
+        <p>
+            <strong>No se recomienda usar Development en producción</strong>, ya que podría mostrar
+            información sensible a los usuarios finales.
+        </p>
+    </div>
+</section>

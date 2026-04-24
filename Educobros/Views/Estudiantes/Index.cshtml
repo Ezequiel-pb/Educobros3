@@ -1,0 +1,112 @@
+﻿@model List<EduCobros.Models.Estudiante>
+
+@{
+    ViewData["Title"] = "Estudiantes";
+    var totalEstudiantes = Model.Count;
+    var enMora = Model.Count(e => e.MesesDebidos > 0);
+}
+
+<section class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="page-badge">Panel de estudiantes</span>
+            <h1 class="page-title">Estudiantes y balances</h1>
+            <p class="page-subtitle">Consulta, registra y administra los estudiantes del sistema.</p>
+        </div>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Secretaria"))
+        {
+            <div class="page-actions">
+                <a asp-action="Create" class="btn btn-primary-custom">Nuevo estudiante</a>
+            </div>
+        }
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total de estudiantes</span>
+            <h3 class="stat-value">@totalEstudiantes</h3>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">En mora</span>
+            <h3 class="stat-value">@enMora</h3>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Al día</span>
+            <h3 class="stat-value">@(totalEstudiantes - enMora)</h3>
+        </div>
+    </div>
+
+    <div class="table-panel">
+        <div class="table-responsive">
+            <table class="table custom-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Grado</th>
+                        <th>Mensualidad</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var est in Model)
+                    {
+                        <tr>
+                            <td>#@est.Id</td>
+                            <td>
+                                <div class="student-inline">
+                                    <div class="student-avatar-sm">
+                                        @est.Nombre.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">@est.Nombre</div>
+                                        <small class="text-muted">@est.Grado</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@est.Grado</td>
+                            <td>RD$ @est.Mensualidad.ToString("N0")</td>
+                            <td>
+                                <span class="status-badge @(est.MesesDebidos > 0 ? "status-danger" : "status-success")">
+                                    @est.Estado
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="action-group">
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Secretaria"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@est.Id" class="btn btn-warning-soft btn-sm">
+                                            Editar
+                                        </a>
+                                    }
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <form asp-action="Delete" asp-route-id="@est.Id" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger-soft btn-sm"
+                                                    onclick="return confirm('¿Eliminar este estudiante?')">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                No hay estudiantes registrados.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

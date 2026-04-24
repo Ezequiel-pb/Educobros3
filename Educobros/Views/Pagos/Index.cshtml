@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EduCobros.Models.Pago>
+
+@{
+    ViewData["Title"] = "Pagos";
+    var totalPagos = Model.Count();
+    var totalMonto = Model.Sum(p => p.Monto);
+    var ultimoPago = Model.OrderByDescending(p => p.Fecha).FirstOrDefault();
+}
+
+<section class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="page-badge">Gestión financiera</span>
+            <h1 class="page-title">Listado de pagos</h1>
+            <p class="page-subtitle">Consulta todos los pagos registrados en el sistema.</p>
+        </div>
+
+        <div class="page-actions">
+            <a asp-action="Create" class="btn btn-primary-custom">Registrar pago</a>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Total de pagos</span>
+            <h3 class="stat-value">@totalPagos</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Monto acumulado</span>
+            <h3 class="stat-value">RD$ @totalMonto.ToString("N2")</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Último pago</span>
+            <h3 class="stat-value">@(ultimoPago != null ? ultimoPago.Fecha.ToString("dd/MM/yyyy") : "Sin registros")</h3>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state-panel">
+            <div class="empty-icon">📭</div>
+            <h3>No hay pagos registrados</h3>
+            <p>Cuando registres pagos, aparecerán aquí organizados por fecha y estudiante.</p>
+            <a asp-action="Create" class="btn btn-primary-custom">Registrar primer pago</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-panel">
+            <div class="table-responsive">
+                <table class="table custom-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th>Concepto</th>
+                            <th>Método</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pago in Model.OrderByDescending(p => p.Fecha))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="student-inline">
+                                        <div class="student-avatar-sm">
+                                            @(string.IsNullOrWhiteSpace(pago.Estudiante?.Nombre) ? "E" : pago.Estudiante.Nombre.Substring(0, 1).ToUpper())
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold">@pago.Estudiante?.Nombre</div>
+                                            <small class="text-muted">Pago registrado</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="money-badge">RD$ @pago.Monto.ToString("N2")</span>
+                                </td>
+                                <td>@pago.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@pago.Concepto</td>
+                                <td>
+                                    <span class="method-badge">@pago.Metodo</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>v>

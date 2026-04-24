@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="home-hero">
+    <div class="home-hero-content">
+        <span class="page-badge">Sistema académico</span>
+
+        <h1>Control inteligente de estudiantes y pagos</h1>
+
+        <p>
+            Administra estudiantes, registra pagos y consulta reportes en una plataforma
+            clara, moderna y eficiente para instituciones educativas.
+        </p>
+
+        <div class="hero-actions">
+            <a asp-controller="Estudiantes" asp-action="Index" class="btn btn-primary-custom">
+                Ver estudiantes
+            </a>
+
+            <a asp-controller="Pagos" asp-action="Index" class="btn btn-outline-custom">
+                Ver pagos
+            </a>
+        </div>
+    </div>
+
+    <div class="home-hero-visual">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
+             alt="Educación"
+             class="hero-main-image" />
+    </div>
+</section>
+
+<section class="feature-grid">
+    <div class="feature-card">
+        <h3>Gestión de estudiantes</h3>
+        <p>Controla la información académica y financiera de cada estudiante.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Registro de pagos</h3>
+        <p>Administra pagos de manera clara, rápida y organizada.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Reportes inteligentes</h3>
+        <p>Visualiza datos importantes para la toma de decisiones.</p>
+    </div>
+</section>

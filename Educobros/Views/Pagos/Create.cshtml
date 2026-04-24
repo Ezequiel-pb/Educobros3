@@ -1,0 +1,83 @@
+﻿@model EduCobros.Models.Pago
+
+@{
+    ViewData["Title"] = "Registrar Pago";
+}
+
+<section class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="page-badge">Gestión de cobros</span>
+            <h1 class="page-title">Registrar pago</h1>
+            <p class="page-subtitle">Selecciona el estudiante y completa la información del pago.</p>
+        </div>
+        <div class="page-actions">
+            <a asp-action="Index" class="btn btn-light-custom">Volver</a>
+        </div>
+    </div>
+
+    <div class="form-panel">
+        <form asp-action="Create" method="post" class="custom-form">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3"></div>
+
+            <div class="form-grid">
+                <div class="form-group-custom full-width">
+                    <label asp-for="EstudianteId" class="form-label-custom"></label>
+                    <select asp-for="EstudianteId" class="form-select-custom" asp-items="ViewBag.EstudianteId">
+                        <option value="">-- Selecciona un estudiante --</option>
+                    </select>
+                    <span asp-validation-for="EstudianteId" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group-custom full-width">
+                    <label asp-for="Concepto" class="form-label-custom"></label>
+                    <input asp-for="Concepto" class="form-control-custom" placeholder="Ej: Mensualidad de abril" />
+                    <span asp-validation-for="Concepto" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Monto" class="form-label-custom"></label>
+                    <input asp-for="Monto" class="form-control-custom" type="number" step="0.01" placeholder="0.00" />
+                    <span asp-validation-for="Monto" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Fecha" class="form-label-custom"></label>
+                    <input asp-for="Fecha" class="form-control-custom" type="date" value="@Model?.Fecha.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="Fecha" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Metodo" class="form-label-custom"></label>
+                    <select asp-for="Metodo" class="form-select-custom">
+                        <option value="">-- Selecciona un método --</option>
+                        <option>Efectivo</option>
+                        <option>Transferencia</option>
+                        <option>Tarjeta</option>
+                        <option>Depósito</option>
+                    </select>
+                    <span asp-validation-for="Metodo" class="text-danger small"></span>
+                </div>
+
+                <div class="form-group-custom full-width">
+                    <label asp-for="Notas" class="form-label-custom"></label>
+                    <textarea asp-for="Notas" class="form-control-custom" rows="4" placeholder="Notas adicionales del pago (opcional)"></textarea>
+                    <span asp-validation-for="Notas" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary-custom">Guardar pago</button>
+                <a asp-action="Index" class="btn btn-outline-custom">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
